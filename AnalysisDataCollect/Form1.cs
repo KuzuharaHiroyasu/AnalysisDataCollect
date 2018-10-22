@@ -31,7 +31,7 @@ namespace AnalysisDataCollect
         {
             int fileCount;
             string path;
-            string output_path = path_textbox.Text + "/sum";
+            string output_path = path_textbox.Text + "/_sum";
             Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
 
             //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
