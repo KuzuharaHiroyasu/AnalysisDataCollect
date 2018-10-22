@@ -33,6 +33,7 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.acceStartButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pluseStartButton
@@ -74,11 +75,21 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "取得データ内で1テキスト1データとなっている演算結果を１つのテキストファイルにまとめる";
             // 
+            // acceStartButton
+            // 
+            this.acceStartButton.Location = new System.Drawing.Point(422, 86);
+            this.acceStartButton.Name = "acceStartButton";
+            this.acceStartButton.Size = new System.Drawing.Size(132, 50);
+            this.acceStartButton.TabIndex = 4;
+            this.acceStartButton.Text = "acceデータまとめ開始";
+            this.acceStartButton.UseVisualStyleBackColor = true;
+            this.acceStartButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.acceStartButton_MouseClick);
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(606, 148);
+            this.Controls.Add(this.acceStartButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.path_textbox);
@@ -98,6 +109,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button acceStartButton;
     }
 }
 

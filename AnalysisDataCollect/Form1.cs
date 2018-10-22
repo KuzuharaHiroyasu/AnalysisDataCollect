@@ -212,5 +212,92 @@ namespace AnalysisDataCollect
             string[] dragFilePathArr = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             path_textbox.Text = dragFilePathArr[0];
         }
+
+        private void acceStartButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            int fileCount;
+            int cnt_nine = 0;
+            string path;
+            string output_path = path_textbox.Text + "/_sum";
+            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
+
+            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
+            if (System.IO.Directory.Exists(output_path))
+            {
+                Directory.Delete(output_path, true);
+            }
+
+            //sumフォルダがない状態でサブフォルダの数を取得
+            fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
+
+            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
+
+            for (int i = 0; i <= fileCount - 1; i++)
+            {
+                path = path_textbox.Text + "/" + cnt_nine;
+                if (System.IO.Directory.Exists(path))
+                {
+                    string line = "";
+                    string fileName = "";
+
+                    /* 加速度 */
+                    // X軸
+                    fileName = path + "/acce_x.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_x.txt", System.Text.Encoding.ASCII))
+                        {
+                            line = file.ReadLine();
+
+                            // ファイルを開く
+                            StreamWriter writer = new StreamWriter(output_path + "/acce_x_sum.txt", true, enc);
+
+                            writer.Write(line + "\n");
+
+                            writer.Close();
+                        }
+                    }
+                    // Y軸
+                    fileName = path + "/acce_y.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_y.txt", System.Text.Encoding.ASCII))
+                        {
+                            line = file.ReadLine();
+
+                            // ファイルを開く
+                            StreamWriter writer = new StreamWriter(output_path + "/acce_y_sum.txt", true, enc);
+
+                            writer.Write(line + "\n");
+
+                            writer.Close();
+                        }
+                    }
+                    // Z軸
+                    fileName = path + "/acce_z.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_z.txt", System.Text.Encoding.ASCII))
+                        {
+                            line = file.ReadLine();
+
+                            // ファイルを開く
+                            StreamWriter writer = new StreamWriter(output_path + "/acce_z_sum.txt", true, enc);
+
+                            writer.Write(line + "\n");
+
+                            writer.Close();
+                        }
+                    }
+                    cnt_nine += 9;
+                }
+                else
+                {
+                    MessageBox.Show(path + "は存在しません");
+                    return;
+                }
+            }
+            MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+        }
     }
 }
