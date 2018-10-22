@@ -216,7 +216,6 @@ namespace AnalysisDataCollect
         private void acceStartButton_MouseClick(object sender, MouseEventArgs e)
         {
             int fileCount;
-            int cnt_nine = 0;
             string path;
             string output_path = path_textbox.Text + "/_sum";
             Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
@@ -234,7 +233,7 @@ namespace AnalysisDataCollect
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
-                path = path_textbox.Text + "/" + cnt_nine;
+                path = path_textbox.Text + "/" + i;
                 if (System.IO.Directory.Exists(path))
                 {
                     string line = "";
@@ -289,7 +288,6 @@ namespace AnalysisDataCollect
                             writer.Close();
                         }
                     }
-                    cnt_nine += 9;
                 }
                 else
                 {
