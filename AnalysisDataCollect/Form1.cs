@@ -375,7 +375,6 @@ namespace AnalysisDataCollect
                             }
                         }
                     }
-
                 }
                 else
                 {
