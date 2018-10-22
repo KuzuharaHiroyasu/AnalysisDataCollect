@@ -341,7 +341,7 @@ namespace AnalysisDataCollect
                             writer.Close();
                         }
                     }
-                    // いびき
+                    // いびき判定
                     fileName = path + "/snore_.txt";
                     if (System.IO.File.Exists(fileName))
                     {
@@ -357,6 +357,25 @@ namespace AnalysisDataCollect
                             writer.Close();
                         }
                     }
+                    // いびき生データ
+                    fileName = path + "/rawsnore.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/rawsnore.txt", System.Text.Encoding.ASCII))
+                        {
+                            while (file.Peek() >= 0)
+                            {
+
+                                line = file.ReadLine();
+                                line = line + "\n";
+                                // ファイルを開く
+                                StreamWriter writer = new StreamWriter(output_path + "/rawsnore_sum.txt", true, enc);
+                                writer.Write(line);
+                                writer.Close();
+                            }
+                        }
+                    }
+
                 }
                 else
                 {
