@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.start = new System.Windows.Forms.Button();
+            this.pluseStartButton = new System.Windows.Forms.Button();
             this.path_textbox = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // start
+            // pluseStartButton
             // 
-            this.start.Location = new System.Drawing.Point(244, 84);
-            this.start.Name = "start";
-            this.start.Size = new System.Drawing.Size(118, 41);
-            this.start.TabIndex = 0;
-            this.start.Text = "データまとめ開始";
-            this.start.UseVisualStyleBackColor = true;
-            this.start.MouseClick += new System.Windows.Forms.MouseEventHandler(this.start_MouseClick);
+            this.pluseStartButton.Location = new System.Drawing.Point(57, 86);
+            this.pluseStartButton.Name = "pluseStartButton";
+            this.pluseStartButton.Size = new System.Drawing.Size(132, 50);
+            this.pluseStartButton.TabIndex = 0;
+            this.pluseStartButton.Text = "pluseデータまとめ開始";
+            this.pluseStartButton.UseVisualStyleBackColor = true;
+            this.pluseStartButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pluseStartButton_MouseClick);
             // 
             // path_textbox
             // 
@@ -82,7 +82,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.path_textbox);
-            this.Controls.Add(this.start);
+            this.Controls.Add(this.pluseStartButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
             this.Text = "データまとめツール";
@@ -93,7 +93,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button start;
+        private System.Windows.Forms.Button pluseStartButton;
         private System.Windows.Forms.TextBox path_textbox;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label1;

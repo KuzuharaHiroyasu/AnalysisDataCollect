@@ -27,7 +27,7 @@ namespace AnalysisDataCollect
             }
         }
 
-        private void start_MouseClick(object sender, MouseEventArgs e)
+        private void pluseStartButton_MouseClick(object sender, MouseEventArgs e)
         {
             int fileCount;
             string path;
@@ -53,6 +53,7 @@ namespace AnalysisDataCollect
                     string line = "";
                     string fileName = "";
 
+                    /* Pluse */
                     /* 赤色 */
                     // 脈拍
                     fileName = path + "/snpk(1).txt"; 
