@@ -299,5 +299,74 @@ namespace AnalysisDataCollect
             }
             MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
         }
+
+        private void apneaStartButton_MouseClick(object sender, MouseEventArgs e)
+        {
+            int fileCount;
+            string path;
+            string output_path = path_textbox.Text + "/_sum";
+            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
+
+            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
+            if (System.IO.Directory.Exists(output_path))
+            {
+                Directory.Delete(output_path, true);
+            }
+
+            //sumフォルダがない状態でサブフォルダの数を取得
+            fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
+
+            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
+
+            for (int i = 0; i <= fileCount - 1; i++)
+            {
+                path = path_textbox.Text + "/" + i;
+                if (System.IO.Directory.Exists(path))
+                {
+                    string line = "";
+                    string fileName = "";
+
+                    /* 呼吸 */
+                    // 無呼吸
+                    fileName = path + "/apnea.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/apnea.txt", System.Text.Encoding.ASCII))
+                        {
+                            line = file.ReadLine();
+
+                            // ファイルを開く
+                            StreamWriter writer = new StreamWriter(output_path + "/apnea_sum.txt", true, enc);
+
+                            writer.Write(line + "\n");
+
+                            writer.Close();
+                        }
+                    }
+                    // いびき
+                    fileName = path + "/snore_.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/snore_.txt", System.Text.Encoding.ASCII))
+                        {
+                            line = file.ReadLine();
+
+                            // ファイルを開く
+                            StreamWriter writer = new StreamWriter(output_path + "/snore__sum.txt", true, enc);
+
+                            writer.Write(line + "\n");
+
+                            writer.Close();
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(path + "は存在しません");
+                    return;
+                }
+            }
+            MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+        }
     }
 }

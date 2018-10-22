@@ -34,6 +34,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.acceStartButton = new System.Windows.Forms.Button();
+            this.apneaStartButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pluseStartButton
@@ -84,11 +85,23 @@
             this.acceStartButton.Text = "acceデータまとめ開始";
             this.acceStartButton.UseVisualStyleBackColor = true;
             this.acceStartButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.acceStartButton_MouseClick);
+            // 
+            // apneaStartButton
+            // 
+            this.apneaStartButton.Location = new System.Drawing.Point(240, 86);
+            this.apneaStartButton.Name = "apneaStartButton";
+            this.apneaStartButton.Size = new System.Drawing.Size(132, 50);
+            this.apneaStartButton.TabIndex = 5;
+            this.apneaStartButton.Text = "apneaデータまとめ開始";
+            this.apneaStartButton.UseVisualStyleBackColor = true;
+            this.apneaStartButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.apneaStartButton_MouseClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(606, 148);
+            this.Controls.Add(this.apneaStartButton);
             this.Controls.Add(this.acceStartButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -110,6 +123,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button acceStartButton;
+        private System.Windows.Forms.Button apneaStartButton;
     }
 }
 
