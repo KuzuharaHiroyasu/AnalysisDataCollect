@@ -375,6 +375,24 @@ namespace AnalysisDataCollect
                             }
                         }
                     }
+                    // 閾値を超えた回数の移動累計
+                    fileName = path + "/snore_Thre.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/snore_Thre.txt", System.Text.Encoding.ASCII))
+                        {
+                            while (file.Peek() >= 0)
+                            {
+
+                                line = file.ReadLine();
+                                line = line + "\n";
+                                // ファイルを開く
+                                StreamWriter writer = new StreamWriter(output_path + "/snore_Thre_sum.txt", true, enc);
+                                writer.Write(line);
+                                writer.Close();
+                            }
+                        }
+                    }
                 }
                 else
                 {
