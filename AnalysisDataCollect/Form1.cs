@@ -18,6 +18,7 @@ namespace AnalysisDataCollect
             InitializeComponent();
         }
 
+        /* テキストボックスクリックでフォルダ選択ダイアログ表示 */
         private void path_textbox_MouseClick(object sender, MouseEventArgs e)
         {
             DialogResult dr = folderBrowserDialog1.ShowDialog();
@@ -27,11 +28,7 @@ namespace AnalysisDataCollect
             }
         }
 
-        private void path_textbox_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.All;
-        }
-
+        /* テキストボックスにドラッグ&ドロップでファイルパスを選択 */
         private void path_textbox_DragDrop(object sender, DragEventArgs e)
         {
             if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
@@ -40,6 +37,12 @@ namespace AnalysisDataCollect
             path_textbox.Text = dragFilePathArr[0];
         }
 
+        private void path_textbox_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.All;
+        }
+
+        /* pluseデータまとめ開始ボタン押下 */
         private async void pluseStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
@@ -66,6 +69,7 @@ namespace AnalysisDataCollect
             }
         }
 
+        /* apneaデータまとめ開始ボタン押下 */
         private async void apneaStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
@@ -91,6 +95,7 @@ namespace AnalysisDataCollect
             }
         }
 
+        /* acceデータまとめ開始ボタン押下 */
         private async void acceStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
@@ -116,6 +121,7 @@ namespace AnalysisDataCollect
             }
         }
 
+        /* pluseデータまとめ処理 */
         private Boolean pluseCollect(string output_path, int fileCount)
         {
             string path;
@@ -276,6 +282,7 @@ namespace AnalysisDataCollect
             return true;
         }
 
+        /* apneaデータまとめ処理 */
         private Boolean apneaCollect(string output_path, int fileCount)
         {
             string path;
@@ -371,6 +378,7 @@ namespace AnalysisDataCollect
             return true;
         }
 
+        /* acceデータまとめ処理 */
         private Boolean acceCollect(string output_path, int fileCount)
         {
             string path;
