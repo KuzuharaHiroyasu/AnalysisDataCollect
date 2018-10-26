@@ -13,6 +13,9 @@ namespace AnalysisDataCollect
 {
     public partial class Form1 : Form
     {
+        string path = "";
+        string output_path = "";
+
         public Form1()
         {
             InitializeComponent();
@@ -46,68 +49,58 @@ namespace AnalysisDataCollect
         private async void pluseStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
-            string output_path = path_textbox.Text + "/_sum";
 
             /* データ出力用フォルダ作成 */
-            createOutputFolder(output_path);
+            createOutputFolder();
 
             //sumフォルダを抜いたサブフォルダの数を取得
             fileCount = (Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length) - 1;
 
-            // 時間のかかる処理を別スレッドで開始
-            Boolean result = await Task.Run(() => pluseCollect(output_path, fileCount));
+            // まとめ処理を別スレッドで開始
+            bool result = await Task.Run(() => pluseCollect(output_path, fileCount));
 
-            if (result)
-            {
-                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
-            }
+            msgShow(result);
         }
 
         /* apneaデータまとめ開始ボタン押下 */
         private async void apneaStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
-            string output_path = path_textbox.Text + "/_sum";
 
             /* データ出力用フォルダ作成 */
-            createOutputFolder(output_path);
+            createOutputFolder();
 
             //sumフォルダを抜いたサブフォルダの数を取得
             fileCount = (Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length) - 1;
 
-            // 時間のかかる処理を別スレッドで開始
-            Boolean result = await Task.Run(() => apneaCollect(output_path, fileCount));
+            // まとめ処理を別スレッドで開始
+            bool result = await Task.Run(() => apneaCollect(output_path, fileCount));
 
-            if (result)
-            {
-                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
-            }
+            msgShow(result);
         }
 
         /* acceデータまとめ開始ボタン押下 */
         private async void acceStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
-            string output_path = path_textbox.Text + "/_sum";
 
             /* データ出力用フォルダ作成 */
-            createOutputFolder(output_path);
+            createOutputFolder();
 
             //sumフォルダを抜いたサブフォルダの数を取得
             fileCount = (Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length) - 1;
 
-            // 時間のかかる処理を別スレッドで開始
-            Boolean result = await Task.Run(() => acceCollect(output_path, fileCount));
+            // まとめ処理を別スレッドで開始
+            bool result = await Task.Run(() => acceCollect(output_path, fileCount));
 
-            if (result)
-            {
-                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
-            }
+            msgShow(result);
         }
 
         /* データ出力用フォルダ作成 */
-        private void createOutputFolder(string output_path)
+        private void createOutputFolder()
         {
+            output_path = path_textbox.Text + "/_sum";
+
             //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
             while (System.IO.Directory.Exists(output_path))
             {
@@ -116,11 +109,9 @@ namespace AnalysisDataCollect
             Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
         }
 
-
         /* pluseデータまとめ処理 */
         private bool pluseCollect(string output_path, int fileCount)
         {
-            string path = "";
             string fileName = "";
             string outputFilePath = "";
 
@@ -177,7 +168,6 @@ namespace AnalysisDataCollect
                 }
                 else
                 {
-                    MessageBox.Show(path + "は存在しません");
                     return false;
                 }
             }
@@ -187,7 +177,6 @@ namespace AnalysisDataCollect
         /* apneaデータまとめ処理 */
         private bool apneaCollect(string output_path, int fileCount)
         {
-            string path = "";
             string fileName = "";
             string outputFilePath = "";
 
@@ -227,7 +216,6 @@ namespace AnalysisDataCollect
                 }
                 else
                 {
-                    MessageBox.Show(path + "は存在しません");
                     return false;
                 }
             }
@@ -237,7 +225,6 @@ namespace AnalysisDataCollect
         /* acceデータまとめ処理 */
         private bool acceCollect(string output_path, int fileCount)
         {
-            string path = "";
             string fileName = "";
             string outputFilePath = "";
 
@@ -267,7 +254,6 @@ namespace AnalysisDataCollect
                 }
                 else
                 {
-                    MessageBox.Show(path + "は存在しません");
                     return false;
                 }
             }
@@ -299,6 +285,18 @@ namespace AnalysisDataCollect
         {
             Counter_label.Text = (cnt + 1) + " / " + fileCount;
             Update();
+        }
+
+        /* メッセージ表示 */
+        private void msgShow(bool result)
+        {
+            if (result)
+            {
+                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+            } else
+            {
+                MessageBox.Show(path + "は存在しません");
+            }
         }
     }
 }
