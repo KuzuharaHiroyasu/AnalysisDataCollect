@@ -370,12 +370,19 @@ namespace AnalysisDataCollect
         /************************************************************************/
         private void msgShow(bool result)
         {
-            if (result)
+            // メッセージは最前面に表示
+            using (Form f = new Form())
             {
-                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
-            } else
-            {
-                MessageBox.Show(path + "は存在しません");
+                f.TopMost = true;
+                if (result)
+                {
+                    MessageBox.Show(f, "完了しました。\n" + output_path + "に結果を出力しました。");
+                }
+                else
+                {
+                    MessageBox.Show(f, path + "は存在しません");
+                }
+                f.TopMost = false;
             }
         }
     }
