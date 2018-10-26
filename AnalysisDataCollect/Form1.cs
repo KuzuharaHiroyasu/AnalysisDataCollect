@@ -81,6 +81,10 @@ namespace AnalysisDataCollect
             //sumフォルダを抜いたサブフォルダの数を取得
             fileCount = (Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length) - 1;
 
+            // プログレスバー設定
+            progressBar.Minimum = 0;
+            progressBar.Maximum = fileCount;
+
             // まとめ処理を別スレッドで開始
             bool result = await Task.Run(() => pluseCollect(output_path, fileCount));
 
@@ -104,6 +108,10 @@ namespace AnalysisDataCollect
             //sumフォルダを抜いたサブフォルダの数を取得
             fileCount = (Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length) - 1;
 
+            // プログレスバー設定
+            progressBar.Minimum = 0;
+            progressBar.Maximum = fileCount;
+
             // まとめ処理を別スレッドで開始
             bool result = await Task.Run(() => apneaCollect(output_path, fileCount));
 
@@ -126,6 +134,10 @@ namespace AnalysisDataCollect
 
             //sumフォルダを抜いたサブフォルダの数を取得
             fileCount = (Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length) - 1;
+
+            // プログレスバー設定
+            progressBar.Minimum = 0;
+            progressBar.Maximum = fileCount;
 
             // まとめ処理を別スレッドで開始
             bool result = await Task.Run(() => acceCollect(output_path, fileCount));
@@ -358,6 +370,7 @@ namespace AnalysisDataCollect
         /************************************************************************/
         private void labelCntUp(int cnt, int fileCount)
         {
+            progressBar.Value = cnt;
             Counter_label.Text = (cnt + 1) + " / " + fileCount;
             Update();
         }

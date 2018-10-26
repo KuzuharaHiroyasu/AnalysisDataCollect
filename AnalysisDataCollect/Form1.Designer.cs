@@ -36,6 +36,7 @@
             this.acceStartButton = new System.Windows.Forms.Button();
             this.apneaStartButton = new System.Windows.Forms.Button();
             this.Counter_label = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // pluseStartButton
@@ -100,17 +101,25 @@
             // Counter_label
             // 
             this.Counter_label.AutoSize = true;
-            this.Counter_label.Location = new System.Drawing.Point(285, 160);
+            this.Counter_label.Location = new System.Drawing.Point(285, 144);
             this.Counter_label.Name = "Counter_label";
             this.Counter_label.Size = new System.Drawing.Size(15, 12);
             this.Counter_label.TabIndex = 6;
             this.Counter_label.Text = " /";
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(45, 159);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(525, 23);
+            this.progressBar.TabIndex = 7;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(606, 194);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.Counter_label);
             this.Controls.Add(this.apneaStartButton);
             this.Controls.Add(this.acceStartButton);
@@ -136,6 +145,7 @@
         private System.Windows.Forms.Button acceStartButton;
         private System.Windows.Forms.Button apneaStartButton;
         private System.Windows.Forms.Label Counter_label;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
 
