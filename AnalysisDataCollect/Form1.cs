@@ -370,7 +370,7 @@ namespace AnalysisDataCollect
         /************************************************************************/
         private void msgShow(bool result)
         {
-            // メッセージは最前面に表示
+            // メッセージを最前面に表示
             using (Form f = new Form())
             {
                 f.TopMost = true;
