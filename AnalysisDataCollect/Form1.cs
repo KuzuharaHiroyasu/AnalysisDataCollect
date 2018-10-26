@@ -27,12 +27,10 @@ namespace AnalysisDataCollect
             }
         }
 
-        private void pluseStartButton_MouseClick(object sender, MouseEventArgs e)
+        private async void pluseStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
-            string path;
             string output_path = path_textbox.Text + "/_sum";
-            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
 
             //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
             if (System.IO.Directory.Exists(output_path))
@@ -44,6 +42,21 @@ namespace AnalysisDataCollect
             fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
 
             Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
+
+
+            // 時間のかかる処理を別スレッドで開始
+            Boolean result = await Task.Run(() => pluseCollect(output_path, fileCount));
+
+            if (result)
+            {
+                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+            }
+        }
+
+        private Boolean pluseCollect(string output_path, int fileCount)
+        {
+            string path;
+            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
 
             for (int i = 0; i <= fileCount-1; i++)
             {
@@ -194,10 +207,10 @@ namespace AnalysisDataCollect
                 else
                 {
                     MessageBox.Show(path + "は存在しません");
-                    return;
+                    return false;
                 }
             }
-            MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+            return true;
         }
 
         private void path_textbox_DragEnter(object sender, DragEventArgs e)
@@ -213,12 +226,10 @@ namespace AnalysisDataCollect
             path_textbox.Text = dragFilePathArr[0];
         }
 
-        private void acceStartButton_MouseClick(object sender, MouseEventArgs e)
+        private async void acceStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
-            string path;
             string output_path = path_textbox.Text + "/_sum";
-            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
 
             //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
             if (System.IO.Directory.Exists(output_path))
@@ -230,6 +241,20 @@ namespace AnalysisDataCollect
             fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
 
             Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
+
+            // 時間のかかる処理を別スレッドで開始
+            Boolean result = await Task.Run(() => acceCollect(output_path, fileCount));
+
+            if (result)
+            {
+                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+            }
+        }
+
+        private Boolean acceCollect(string output_path, int fileCount)
+        {
+            string path;
+            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
@@ -292,18 +317,16 @@ namespace AnalysisDataCollect
                 else
                 {
                     MessageBox.Show(path + "は存在しません");
-                    return;
+                    return false;
                 }
             }
-            MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+            return true;
         }
 
-        private void apneaStartButton_MouseClick(object sender, MouseEventArgs e)
+        private async void apneaStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
-            string path;
             string output_path = path_textbox.Text + "/_sum";
-            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
 
             //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
             if (System.IO.Directory.Exists(output_path))
@@ -316,8 +339,25 @@ namespace AnalysisDataCollect
 
             Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
 
+            // 時間のかかる処理を別スレッドで開始
+            Boolean result = await Task.Run(() => apneaCollect(output_path, fileCount));
+
+            if(result)
+            {
+                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+            }
+        }
+
+        private Boolean apneaCollect(string output_path, int fileCount)
+        {
+            string path;
+            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
+
             for (int i = 0; i <= fileCount - 1; i++)
             {
+                Counter_label.Text = (i + 1) + " / " + fileCount;
+                Update();
+
                 path = path_textbox.Text + "/" + i;
                 if (System.IO.Directory.Exists(path))
                 {
@@ -397,10 +437,10 @@ namespace AnalysisDataCollect
                 else
                 {
                     MessageBox.Show(path + "は存在しません");
-                    return;
+                    return false;
                 }
             }
-            MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+            return true;
         }
     }
 }
