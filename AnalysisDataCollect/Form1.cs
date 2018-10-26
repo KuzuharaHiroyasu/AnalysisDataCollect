@@ -124,154 +124,60 @@ namespace AnalysisDataCollect
         /* pluseデータまとめ処理 */
         private Boolean pluseCollect(string output_path, int fileCount)
         {
-            string path;
-            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
+            string path = "";
+            string fileName = "";
+            string outputFilePath = "";
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
+                Counter_label.Text = (i + 1) + " / " + fileCount;
+                Update();
+
                 path = path_textbox.Text + "/" + i;
                 if (System.IO.Directory.Exists(path))
                 {
-                    string line = "";
-                    string fileName = "";
-
                     /* Pluse */
                     /* 赤色 */
                     // 脈拍
                     fileName = path + "/snpk(1).txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/snpk(1).txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
+                    outputFilePath = output_path + "/snpk(1)_sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/snpk(1)_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
                     // AC平均値
                     fileName = path + "/ac_avg(1).txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/ac_avg(1).txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/ac_avg(1)_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
+                    outputFilePath = output_path + "/ac_avg(1)_sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
                     // DC平均値
                     fileName = path + "/dc_avg(1).txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/dc_avg(1).txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/dc_avg(1)_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
+                    outputFilePath = output_path + "/dc_avg(1)_sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
                     /* 赤外 */
                     // 脈拍
                     fileName = path + "/snpk(2).txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/snpk(2).txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/snpk(2)_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
+                    outputFilePath = output_path + "/snpk(2)_sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
                     // AC平均値
                     fileName = path + "/ac_avg(2).txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/ac_avg(2).txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/ac_avg(2)_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
+                    outputFilePath = output_path + "/ac_avg(2)_sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
                     // DC平均値
                     fileName = path + "/dc_avg(2).txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/dc_avg(2).txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/dc_avg(2)_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
+                    outputFilePath = output_path + "/dc_avg(2)_sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
                     // SpO2
                     fileName = path + "/spo2(0).txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/spo2(0).txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/spo2(0)_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
+                    outputFilePath = output_path + "/spo2(0)_sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
                     // AC平均値の比（赤色/赤外）
                     fileName = path + "/ac_avg_ratio(0).txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/ac_avg_ratio(0).txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/ac_avg_ratio(0)_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
+                    outputFilePath = output_path + "/ac_avg_ratio(0)_sum.txt";
+                    dataCollect(fileName, outputFilePath);
                 }
                 else
                 {
@@ -285,8 +191,9 @@ namespace AnalysisDataCollect
         /* apneaデータまとめ処理 */
         private Boolean apneaCollect(string output_path, int fileCount)
         {
-            string path;
-            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
+            string path = "";
+            string fileName = "";
+            string outputFilePath = "";
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
@@ -296,78 +203,31 @@ namespace AnalysisDataCollect
                 path = path_textbox.Text + "/" + i;
                 if (System.IO.Directory.Exists(path))
                 {
-                    string line = "";
-                    string fileName = "";
-
                     /* 呼吸 */
                     // 無呼吸
                     fileName = path + "/apnea.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/apnea.txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
+                    outputFilePath = output_path + "/apnea_sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/apnea_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
                     // いびき判定
                     fileName = path + "/snore_.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/snore_.txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
+                    outputFilePath = output_path + "/snore__sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/snore__sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
                     // いびき生データ
                     fileName = path + "/rawsnore.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/rawsnore.txt", System.Text.Encoding.ASCII))
-                        {
-                            while (file.Peek() >= 0)
-                            {
+                    outputFilePath = output_path + "/rawsnore_sum.txt";
+                    dataCollect(fileName, outputFilePath);
 
-                                line = file.ReadLine();
-                                line = line + "\n";
-                                // ファイルを開く
-                                StreamWriter writer = new StreamWriter(output_path + "/rawsnore_sum.txt", true, enc);
-                                writer.Write(line);
-                                writer.Close();
-                            }
-                        }
-                    }
                     // 閾値を超えた回数の移動累計
                     fileName = path + "/snore_Thre.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/snore_Thre.txt", System.Text.Encoding.ASCII))
-                        {
-                            while (file.Peek() >= 0)
-                            {
+                    outputFilePath = output_path + "/snore_Thre.txt";
+                    dataCollect(fileName, outputFilePath);
 
-                                line = file.ReadLine();
-                                line = line + "\n";
-                                // ファイルを開く
-                                StreamWriter writer = new StreamWriter(output_path + "/snore_Thre_sum.txt", true, enc);
-                                writer.Write(line);
-                                writer.Close();
-                            }
-                        }
-                    }
+                    // 呼吸生データ
+                    fileName = path + "/raw.txt";
+                    outputFilePath = output_path + "/raw.txt";
+                    dataCollect(fileName, outputFilePath);
                 }
                 else
                 {
@@ -381,66 +241,33 @@ namespace AnalysisDataCollect
         /* acceデータまとめ処理 */
         private Boolean acceCollect(string output_path, int fileCount)
         {
-            string path;
-            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
+            string path = "";
+            string fileName = "";
+            string outputFilePath = "";
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
+                Counter_label.Text = (i + 1) + " / " + fileCount;
+                Update();
+
                 path = path_textbox.Text + "/" + i;
                 if (System.IO.Directory.Exists(path))
                 {
-                    string line = "";
-                    string fileName = "";
-
                     /* 加速度 */
                     // X軸
                     fileName = path + "/acce_x.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_x.txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
+                    outputFilePath = output_path + "/acce_x.txt";
+                    dataCollect(fileName, outputFilePath);
 
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/acce_x_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
                     // Y軸
                     fileName = path + "/acce_y.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_y.txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
+                    outputFilePath = output_path + "/acce_y.txt";
+                    dataCollect(fileName, outputFilePath);
 
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/acce_y_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
                     // Z軸
                     fileName = path + "/acce_z.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_z.txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/acce_z_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
+                    outputFilePath = output_path + "/acce_z.txt";
+                    dataCollect(fileName, outputFilePath);
                 }
                 else
                 {
@@ -449,6 +276,26 @@ namespace AnalysisDataCollect
                 }
             }
             return true;
+        }
+
+        /* データまとめ処理 */
+        private void dataCollect(string fileName, string outputFilePath)
+        {
+            string line = "";
+            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
+
+            if (System.IO.File.Exists(fileName))
+            {
+                using (System.IO.StreamReader file = new System.IO.StreamReader(fileName, System.Text.Encoding.ASCII))
+                {
+                    line = file.ReadToEnd();
+                    file.Close();
+                    // ファイルを開く
+                    StreamWriter writer = new StreamWriter(outputFilePath, true, enc);
+                    writer.Write(line);
+                    writer.Close();
+                }
+            }
         }
     }
 }
