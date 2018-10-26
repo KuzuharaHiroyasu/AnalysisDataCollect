@@ -48,17 +48,11 @@ namespace AnalysisDataCollect
             int fileCount;
             string output_path = path_textbox.Text + "/_sum";
 
-            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
-            if (System.IO.Directory.Exists(output_path))
-            {
-                Directory.Delete(output_path, true);
-            }
+            /* データ出力用フォルダ作成 */
+            createOutputFolder(output_path);
 
-            //sumフォルダがない状態でサブフォルダの数を取得
-            fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
-
-            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
-
+            //sumフォルダを抜いたサブフォルダの数を取得
+            fileCount = (Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length) - 1;
 
             // 時間のかかる処理を別スレッドで開始
             Boolean result = await Task.Run(() => pluseCollect(output_path, fileCount));
@@ -75,16 +69,11 @@ namespace AnalysisDataCollect
             int fileCount;
             string output_path = path_textbox.Text + "/_sum";
 
-            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
-            if (System.IO.Directory.Exists(output_path))
-            {
-                Directory.Delete(output_path, true);
-            }
+            /* データ出力用フォルダ作成 */
+            createOutputFolder(output_path);
 
-            //sumフォルダがない状態でサブフォルダの数を取得
-            fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
-
-            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
+            //sumフォルダを抜いたサブフォルダの数を取得
+            fileCount = (Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length) - 1;
 
             // 時間のかかる処理を別スレッドで開始
             Boolean result = await Task.Run(() => apneaCollect(output_path, fileCount));
@@ -101,16 +90,11 @@ namespace AnalysisDataCollect
             int fileCount;
             string output_path = path_textbox.Text + "/_sum";
 
-            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
-            if (System.IO.Directory.Exists(output_path))
-            {
-                Directory.Delete(output_path, true);
-            }
+            /* データ出力用フォルダ作成 */
+            createOutputFolder(output_path);
 
-            //sumフォルダがない状態でサブフォルダの数を取得
-            fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
-
-            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
+            //sumフォルダを抜いたサブフォルダの数を取得
+            fileCount = (Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length) - 1;
 
             // 時間のかかる処理を別スレッドで開始
             Boolean result = await Task.Run(() => acceCollect(output_path, fileCount));
@@ -121,8 +105,20 @@ namespace AnalysisDataCollect
             }
         }
 
+        /* データ出力用フォルダ作成 */
+        private void createOutputFolder(string output_path)
+        {
+            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
+            while (System.IO.Directory.Exists(output_path))
+            {
+                Directory.Delete(output_path, true);
+            }
+            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
+        }
+
+
         /* pluseデータまとめ処理 */
-        private Boolean pluseCollect(string output_path, int fileCount)
+        private bool pluseCollect(string output_path, int fileCount)
         {
             string path = "";
             string fileName = "";
@@ -189,7 +185,7 @@ namespace AnalysisDataCollect
         }
 
         /* apneaデータまとめ処理 */
-        private Boolean apneaCollect(string output_path, int fileCount)
+        private bool apneaCollect(string output_path, int fileCount)
         {
             string path = "";
             string fileName = "";
@@ -239,7 +235,7 @@ namespace AnalysisDataCollect
         }
 
         /* acceデータまとめ処理 */
-        private Boolean acceCollect(string output_path, int fileCount)
+        private bool acceCollect(string output_path, int fileCount)
         {
             string path = "";
             string fileName = "";
