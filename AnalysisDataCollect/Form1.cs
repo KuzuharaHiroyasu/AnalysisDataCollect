@@ -27,6 +27,19 @@ namespace AnalysisDataCollect
             }
         }
 
+        private void path_textbox_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.All;
+        }
+
+        private void path_textbox_DragDrop(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
+
+            string[] dragFilePathArr = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            path_textbox.Text = dragFilePathArr[0];
+        }
+
         private async void pluseStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
@@ -53,12 +66,62 @@ namespace AnalysisDataCollect
             }
         }
 
+        private async void apneaStartButton_MouseClickAsync(object sender, MouseEventArgs e)
+        {
+            int fileCount;
+            string output_path = path_textbox.Text + "/_sum";
+
+            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
+            if (System.IO.Directory.Exists(output_path))
+            {
+                Directory.Delete(output_path, true);
+            }
+
+            //sumフォルダがない状態でサブフォルダの数を取得
+            fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
+
+            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
+
+            // 時間のかかる処理を別スレッドで開始
+            Boolean result = await Task.Run(() => apneaCollect(output_path, fileCount));
+
+            if (result)
+            {
+                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+            }
+        }
+
+        private async void acceStartButton_MouseClickAsync(object sender, MouseEventArgs e)
+        {
+            int fileCount;
+            string output_path = path_textbox.Text + "/_sum";
+
+            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
+            if (System.IO.Directory.Exists(output_path))
+            {
+                Directory.Delete(output_path, true);
+            }
+
+            //sumフォルダがない状態でサブフォルダの数を取得
+            fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
+
+            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
+
+            // 時間のかかる処理を別スレッドで開始
+            Boolean result = await Task.Run(() => acceCollect(output_path, fileCount));
+
+            if (result)
+            {
+                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
+            }
+        }
+
         private Boolean pluseCollect(string output_path, int fileCount)
         {
             string path;
             Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
 
-            for (int i = 0; i <= fileCount-1; i++)
+            for (int i = 0; i <= fileCount - 1; i++)
             {
                 path = path_textbox.Text + "/" + i;
                 if (System.IO.Directory.Exists(path))
@@ -69,7 +132,7 @@ namespace AnalysisDataCollect
                     /* Pluse */
                     /* 赤色 */
                     // 脈拍
-                    fileName = path + "/snpk(1).txt"; 
+                    fileName = path + "/snpk(1).txt";
                     if (System.IO.File.Exists(fileName))
                     {
                         using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/snpk(1).txt", System.Text.Encoding.ASCII))
@@ -213,141 +276,6 @@ namespace AnalysisDataCollect
             return true;
         }
 
-        private void path_textbox_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.All;
-        }
-
-        private void path_textbox_DragDrop(object sender, DragEventArgs e)
-        {
-            if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
-
-            string[] dragFilePathArr = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            path_textbox.Text = dragFilePathArr[0];
-        }
-
-        private async void acceStartButton_MouseClickAsync(object sender, MouseEventArgs e)
-        {
-            int fileCount;
-            string output_path = path_textbox.Text + "/_sum";
-
-            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
-            if (System.IO.Directory.Exists(output_path))
-            {
-                Directory.Delete(output_path, true);
-            }
-
-            //sumフォルダがない状態でサブフォルダの数を取得
-            fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
-
-            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
-
-            // 時間のかかる処理を別スレッドで開始
-            Boolean result = await Task.Run(() => acceCollect(output_path, fileCount));
-
-            if (result)
-            {
-                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
-            }
-        }
-
-        private Boolean acceCollect(string output_path, int fileCount)
-        {
-            string path;
-            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
-
-            for (int i = 0; i <= fileCount - 1; i++)
-            {
-                path = path_textbox.Text + "/" + i;
-                if (System.IO.Directory.Exists(path))
-                {
-                    string line = "";
-                    string fileName = "";
-
-                    /* 加速度 */
-                    // X軸
-                    fileName = path + "/acce_x.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_x.txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/acce_x_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
-                    // Y軸
-                    fileName = path + "/acce_y.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_y.txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/acce_y_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
-                    // Z軸
-                    fileName = path + "/acce_z.txt";
-                    if (System.IO.File.Exists(fileName))
-                    {
-                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_z.txt", System.Text.Encoding.ASCII))
-                        {
-                            line = file.ReadLine();
-
-                            // ファイルを開く
-                            StreamWriter writer = new StreamWriter(output_path + "/acce_z_sum.txt", true, enc);
-
-                            writer.Write(line + "\n");
-
-                            writer.Close();
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(path + "は存在しません");
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private async void apneaStartButton_MouseClickAsync(object sender, MouseEventArgs e)
-        {
-            int fileCount;
-            string output_path = path_textbox.Text + "/_sum";
-
-            //まとめデータ出力用のsumフォルダが既にある場合は一旦中身のファイルごと削除)
-            if (System.IO.Directory.Exists(output_path))
-            {
-                Directory.Delete(output_path, true);
-            }
-
-            //sumフォルダがない状態でサブフォルダの数を取得
-            fileCount = Directory.GetDirectories(path_textbox.Text, "*", SearchOption.TopDirectoryOnly).Length;
-
-            Directory.CreateDirectory(output_path);     //まとめデータ出力用のsumフォルダ作成
-
-            // 時間のかかる処理を別スレッドで開始
-            Boolean result = await Task.Run(() => apneaCollect(output_path, fileCount));
-
-            if(result)
-            {
-                MessageBox.Show("完了しました。\n" + output_path + "に結果を出力しました。");
-            }
-        }
-
         private Boolean apneaCollect(string output_path, int fileCount)
         {
             string path;
@@ -431,6 +359,78 @@ namespace AnalysisDataCollect
                                 writer.Write(line);
                                 writer.Close();
                             }
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(path + "は存在しません");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private Boolean acceCollect(string output_path, int fileCount)
+        {
+            string path;
+            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
+
+            for (int i = 0; i <= fileCount - 1; i++)
+            {
+                path = path_textbox.Text + "/" + i;
+                if (System.IO.Directory.Exists(path))
+                {
+                    string line = "";
+                    string fileName = "";
+
+                    /* 加速度 */
+                    // X軸
+                    fileName = path + "/acce_x.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_x.txt", System.Text.Encoding.ASCII))
+                        {
+                            line = file.ReadLine();
+
+                            // ファイルを開く
+                            StreamWriter writer = new StreamWriter(output_path + "/acce_x_sum.txt", true, enc);
+
+                            writer.Write(line + "\n");
+
+                            writer.Close();
+                        }
+                    }
+                    // Y軸
+                    fileName = path + "/acce_y.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_y.txt", System.Text.Encoding.ASCII))
+                        {
+                            line = file.ReadLine();
+
+                            // ファイルを開く
+                            StreamWriter writer = new StreamWriter(output_path + "/acce_y_sum.txt", true, enc);
+
+                            writer.Write(line + "\n");
+
+                            writer.Close();
+                        }
+                    }
+                    // Z軸
+                    fileName = path + "/acce_z.txt";
+                    if (System.IO.File.Exists(fileName))
+                    {
+                        using (System.IO.StreamReader file = new System.IO.StreamReader(path + "/acce_z.txt", System.Text.Encoding.ASCII))
+                        {
+                            line = file.ReadLine();
+
+                            // ファイルを開く
+                            StreamWriter writer = new StreamWriter(output_path + "/acce_z_sum.txt", true, enc);
+
+                            writer.Write(line + "\n");
+
+                            writer.Close();
                         }
                     }
                 }
