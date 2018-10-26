@@ -130,8 +130,8 @@ namespace AnalysisDataCollect
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
-                Counter_label.Text = (i + 1) + " / " + fileCount;
-                Update();
+                // カウント更新
+                labelCntUp(i, fileCount);
 
                 path = path_textbox.Text + "/" + i;
                 if (System.IO.Directory.Exists(path))
@@ -197,8 +197,8 @@ namespace AnalysisDataCollect
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
-                Counter_label.Text = (i + 1) + " / " + fileCount;
-                Update();
+                // カウント更新
+                labelCntUp(i, fileCount);
 
                 path = path_textbox.Text + "/" + i;
                 if (System.IO.Directory.Exists(path))
@@ -247,8 +247,8 @@ namespace AnalysisDataCollect
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
-                Counter_label.Text = (i + 1) + " / " + fileCount;
-                Update();
+                // カウント更新
+                labelCntUp(i, fileCount);
 
                 path = path_textbox.Text + "/" + i;
                 if (System.IO.Directory.Exists(path))
@@ -296,6 +296,13 @@ namespace AnalysisDataCollect
                     writer.Close();
                 }
             }
+        }
+
+        /* ラベル更新 */
+        private void labelCntUp(int cnt, int fileCount)
+        {
+            Counter_label.Text = (cnt + 1) + " / " + fileCount;
+            Update();
         }
     }
 }
