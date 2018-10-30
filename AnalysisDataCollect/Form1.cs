@@ -274,12 +274,12 @@ namespace AnalysisDataCollect
 
                     // 閾値を超えた回数の移動累計
                     fileName = path + "/snore_Thre.txt";
-                    outputFilePath = output_path + "/snore_Thre.txt";
+                    outputFilePath = output_path + "/snore_Thre_sum.txt";
                     dataCollect(fileName, outputFilePath);
 
                     // 呼吸生データ
                     fileName = path + "/raw.txt";
-                    outputFilePath = output_path + "/raw.txt";
+                    outputFilePath = output_path + "/raw_sum.txt";
                     dataCollect(fileName, outputFilePath);
                 }
                 else
@@ -314,17 +314,17 @@ namespace AnalysisDataCollect
                     /* 加速度 */
                     // X軸
                     fileName = path + "/acce_x.txt";
-                    outputFilePath = output_path + "/acce_x.txt";
+                    outputFilePath = output_path + "/acce_x_sum.txt";
                     dataCollect(fileName, outputFilePath);
 
                     // Y軸
                     fileName = path + "/acce_y.txt";
-                    outputFilePath = output_path + "/acce_y.txt";
+                    outputFilePath = output_path + "/acce_y_sum.txt";
                     dataCollect(fileName, outputFilePath);
 
                     // Z軸
                     fileName = path + "/acce_z.txt";
-                    outputFilePath = output_path + "/acce_z.txt";
+                    outputFilePath = output_path + "/acce_z_sum.txt";
                     dataCollect(fileName, outputFilePath);
                 }
                 else
