@@ -281,10 +281,14 @@ namespace AnalysisDataCollect
                     fileName = path + "/raw.txt";
                     outputFilePath = output_path + "/raw_sum.txt";
                     dataCollect(fileName, outputFilePath);
-                }
-                else
+
+                    // rmsデータ
+                    fileName = path + "/RMS.txt";
+                    outputFilePath = output_path + "/RMS_sum.txt";
+                    dataCollect(fileName, outputFilePath);
+                } else
                 {
-                    return false;
+                    fileCount++;
                 }
             }
             return true;
@@ -371,6 +375,7 @@ namespace AnalysisDataCollect
         private void labelCntUp(int cnt, int fileCount)
         {
             progressBar.Value = cnt;
+            progressBar.Maximum = fileCount;
             Counter_label.Text = (cnt + 1) + " / " + fileCount;
             Update();
         }
