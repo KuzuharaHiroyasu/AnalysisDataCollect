@@ -37,6 +37,7 @@
             this.apneaStartButton = new System.Windows.Forms.Button();
             this.Counter_label = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.stopButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pluseStartButton
@@ -65,9 +66,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(41, 36);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(294, 12);
+            this.label1.Size = new System.Drawing.Size(310, 12);
             this.label1.TabIndex = 2;
-            this.label1.Text = "ax\\pulse、もしくはax\\apnea配下の取得データフォルダを指定";
+            this.label1.Text = "ax\\pulse、ax\\apnea、ax\\acce配下の取得データフォルダを指定";
             // 
             // label2
             // 
@@ -114,11 +115,22 @@
             this.progressBar.Size = new System.Drawing.Size(525, 23);
             this.progressBar.TabIndex = 7;
             // 
+            // stopButton
+            // 
+            this.stopButton.Location = new System.Drawing.Point(474, 13);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(96, 32);
+            this.stopButton.TabIndex = 8;
+            this.stopButton.Text = "停止";
+            this.stopButton.UseVisualStyleBackColor = true;
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(606, 194);
+            this.Controls.Add(this.stopButton);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.Counter_label);
             this.Controls.Add(this.apneaStartButton);
@@ -130,6 +142,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
             this.Text = "データまとめツール";
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -146,6 +159,7 @@
         private System.Windows.Forms.Button apneaStartButton;
         private System.Windows.Forms.Label Counter_label;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Button stopButton;
     }
 }
 

@@ -15,10 +15,24 @@ namespace AnalysisDataCollect
     {
         string path = "";
         string output_path = "";
+        Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
+        bool stopFlag = false;
 
         public Form1()
         {
             InitializeComponent();
+        }
+
+        /************************************************************************/
+        /* 関数名   : Form1_Shown									            */
+        /* 機能     : フォーム表示時のイベント                        		    */
+        /* 引数     : object   : sender                                         */
+        /*          : EventArgs: e                                              */
+        /* 戻り値   : なし														*/
+        /************************************************************************/
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            stopButton.Enabled = false;
         }
 
         /************************************************************************/
@@ -75,6 +89,9 @@ namespace AnalysisDataCollect
         {
             int fileCount;
 
+            // ボタン無効化
+            buttonStateChange(false);
+
             /* データ出力用フォルダ作成 */
             createOutputFolder();
 
@@ -88,7 +105,17 @@ namespace AnalysisDataCollect
             // まとめ処理を別スレッドで開始
             bool result = await Task.Run(() => pluseCollect(output_path, fileCount));
 
-            msgShow(result);
+            if(stopFlag)
+            {
+                stopFlag = false;
+            }
+            else
+            {
+                msgShow(result);
+            }
+
+            // ボタン有効化
+            buttonStateChange(true);
         }
 
         /************************************************************************/
@@ -101,6 +128,9 @@ namespace AnalysisDataCollect
         private async void apneaStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
+
+            // ボタン無効化
+            buttonStateChange(false);
 
             /* データ出力用フォルダ作成 */
             createOutputFolder();
@@ -115,7 +145,17 @@ namespace AnalysisDataCollect
             // まとめ処理を別スレッドで開始
             bool result = await Task.Run(() => apneaCollect(output_path, fileCount));
 
-            msgShow(result);
+            if (stopFlag)
+            {
+                stopFlag = false;
+            }
+            else
+            {
+                msgShow(result);
+            }
+
+            // ボタン有効化
+            buttonStateChange(true);
         }
 
         /************************************************************************/
@@ -129,6 +169,9 @@ namespace AnalysisDataCollect
         {
             int fileCount;
 
+            // ボタン無効化
+            buttonStateChange(false);
+            
             /* データ出力用フォルダ作成 */
             createOutputFolder();
 
@@ -142,7 +185,40 @@ namespace AnalysisDataCollect
             // まとめ処理を別スレッドで開始
             bool result = await Task.Run(() => acceCollect(output_path, fileCount));
 
-            msgShow(result);
+            if (stopFlag)
+            {
+                stopFlag = false;
+            }
+            else
+            {
+                msgShow(result);
+            }
+
+            // ボタン有効化
+            buttonStateChange(true);
+        }
+
+        /************************************************************************/
+        /* 関数名   : stopButton_Click		                					*/
+        /* 機能     : 停止ボタン押下		                                    */
+        /* 引数     : object   : sender                                         */
+        /*          : EventArgs: e                                              */
+        /* 戻り値   : なし														*/
+        /************************************************************************/
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            string message = "作業を停止しますか？";
+
+            string caption = "停止";
+
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+
+            DialogResult result = MessageBox.Show(this, message, caption, buttons, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                stopFlag = true;
+            }
         }
 
         /************************************************************************/
@@ -174,10 +250,32 @@ namespace AnalysisDataCollect
         private bool pluseCollect(string output_path, int fileCount)
         {
             string fileName = "";
-            string outputFilePath = "";
+            string outputFilePat_snpk_1 = output_path + "/snpk(1)_sum.txt";
+            string outputFilePath_ac_avg_1 = output_path + "/ac_avg(1)_sum.txt";
+            string outputFilePath_dc_avg_1 = output_path + "/dc_avg(1)_sum.txt";
+            string outputFilePath_snpk_2 = output_path + "/snpk(2)_sum.txt";
+            string outputFilePath_ac_avg_2 = output_path + "/ac_avg(2)_sum.txt";
+            string outputFilePath_dc_avg_2 = output_path + "/dc_avg(2)_sum.txt";
+            string outputFilePath_spo2 = output_path + "/spo2(0)_sum.txt";
+            string outputFilePath_ac_avg_ratio = output_path + "/ac_avg_ratio(0)_sum.txt";
+
+            // 各まとめ用ファイルを開く
+            StreamWriter writer_snpk_1 = new StreamWriter(outputFilePat_snpk_1, true, enc);
+            StreamWriter writer_ac_avg_1 = new StreamWriter(outputFilePath_ac_avg_1, true, enc);
+            StreamWriter writer_dc_avg_1 = new StreamWriter(outputFilePath_dc_avg_1, true, enc);
+            StreamWriter writer_snpk_2 = new StreamWriter(outputFilePath_snpk_2, true, enc);
+            StreamWriter writer_ac_avg_2 = new StreamWriter(outputFilePath_ac_avg_2, true, enc);
+            StreamWriter writer_dc_avg_2 = new StreamWriter(outputFilePath_dc_avg_2, true, enc);
+            StreamWriter writer_spo2 = new StreamWriter(outputFilePath_spo2, true, enc);
+            StreamWriter writer_ac_avg_ratio = new StreamWriter(outputFilePath_ac_avg_ratio, true, enc);
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
+                if(stopFlag)
+                {// 停止要求がきたら抜ける
+                    break;
+                }
+
                 // カウント更新
                 labelCntUp(i, fileCount);
 
@@ -188,50 +286,51 @@ namespace AnalysisDataCollect
                     /* 赤色 */
                     // 脈拍
                     fileName = path + "/snpk(1).txt";
-                    outputFilePath = output_path + "/snpk(1)_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_snpk_1);
 
                     // AC平均値
                     fileName = path + "/ac_avg(1).txt";
-                    outputFilePath = output_path + "/ac_avg(1)_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_ac_avg_1);
 
                     // DC平均値
                     fileName = path + "/dc_avg(1).txt";
-                    outputFilePath = output_path + "/dc_avg(1)_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_dc_avg_1);
 
                     /* 赤外 */
                     // 脈拍
                     fileName = path + "/snpk(2).txt";
-                    outputFilePath = output_path + "/snpk(2)_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_snpk_2);
 
                     // AC平均値
                     fileName = path + "/ac_avg(2).txt";
-                    outputFilePath = output_path + "/ac_avg(2)_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_ac_avg_2);
 
                     // DC平均値
                     fileName = path + "/dc_avg(2).txt";
-                    outputFilePath = output_path + "/dc_avg(2)_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_dc_avg_2);
 
                     // SpO2
                     fileName = path + "/spo2(0).txt";
-                    outputFilePath = output_path + "/spo2(0)_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_spo2);
 
                     // AC平均値の比（赤色/赤外）
                     fileName = path + "/ac_avg_ratio(0).txt";
-                    outputFilePath = output_path + "/ac_avg_ratio(0)_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_ac_avg_ratio);
                 }
                 else
                 {
-                    return false;
+                    fileCount++;
                 }
             }
+            writer_snpk_1.Close();
+            writer_ac_avg_1.Close();
+            writer_dc_avg_1.Close();
+            writer_snpk_2.Close();
+            writer_ac_avg_2.Close();
+            writer_dc_avg_2.Close();
+            writer_spo2.Close();
+            writer_ac_avg_ratio.Close();
+            
             return true;
         }
 
@@ -246,10 +345,28 @@ namespace AnalysisDataCollect
         private bool apneaCollect(string output_path, int fileCount)
         {
             string fileName = "";
-            string outputFilePath = "";
+            string outputFilePath_apnea = output_path + "/apnea_sum.txt";
+            string outputFilePath_snore = output_path + "/snore__sum.txt";
+            string outputFilePath_rawsnore = output_path + "/rawsnore_sum.txt";
+            string outputFilePath_snore_Thre = output_path + "/snore_Thre_sum.txt";
+            string outputFilePath_raw = output_path + "/raw_sum.txt";
+            string outputFilePath_RMS = output_path + "/RMS_sum.txt";
+
+            // 各まとめ用ファイルを開く
+            StreamWriter writer_apnea = new StreamWriter(outputFilePath_apnea, true, enc);
+            StreamWriter writer_snore = new StreamWriter(outputFilePath_snore, true, enc);
+            StreamWriter writer_rawsnore = new StreamWriter(outputFilePath_rawsnore, true, enc);
+            StreamWriter writer_snore_Thre = new StreamWriter(outputFilePath_snore_Thre, true, enc);
+            StreamWriter writer_raw = new StreamWriter(outputFilePath_raw, true, enc);
+            StreamWriter writer_RMS = new StreamWriter(outputFilePath_RMS, true, enc);
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
+                if (stopFlag)
+                {// 停止要求がきたら抜ける
+                    break;
+                }
+
                 // カウント更新
                 labelCntUp(i, fileCount);
 
@@ -259,38 +376,39 @@ namespace AnalysisDataCollect
                     /* 呼吸 */
                     // 無呼吸
                     fileName = path + "/apnea.txt";
-                    outputFilePath = output_path + "/apnea_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_apnea);
 
                     // いびき判定
                     fileName = path + "/snore_.txt";
-                    outputFilePath = output_path + "/snore__sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_snore);
 
                     // いびき生データ
                     fileName = path + "/rawsnore.txt";
-                    outputFilePath = output_path + "/rawsnore_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_rawsnore);
 
                     // 閾値を超えた回数の移動累計
                     fileName = path + "/snore_Thre.txt";
-                    outputFilePath = output_path + "/snore_Thre_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_snore_Thre);
 
                     // 呼吸生データ
                     fileName = path + "/raw.txt";
-                    outputFilePath = output_path + "/raw_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_raw);
 
                     // rmsデータ
                     fileName = path + "/RMS.txt";
-                    outputFilePath = output_path + "/RMS_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_RMS);
                 } else
                 {
                     fileCount++;
                 }
             }
+            writer_apnea.Close();
+            writer_snore.Close();
+            writer_rawsnore.Close();
+            writer_snore_Thre.Close();
+            writer_raw.Close();
+            writer_RMS.Close();
+
             return true;
         }
 
@@ -305,10 +423,22 @@ namespace AnalysisDataCollect
         private bool acceCollect(string output_path, int fileCount)
         {
             string fileName = "";
-            string outputFilePath = "";
+            string outputFilePath_X = output_path + "/acce_x_sum.txt";
+            string outputFilePath_Y = output_path + "/acce_y_sum.txt";
+            string outputFilePath_Z = output_path + "/acce_z_sum.txt";
+
+            // X, Y, Zのまとめ用ファイルを開く
+            StreamWriter writer_X = new StreamWriter(outputFilePath_X, true, enc);
+            StreamWriter writer_Y = new StreamWriter(outputFilePath_Y, true, enc);
+            StreamWriter writer_Z = new StreamWriter(outputFilePath_Z, true, enc);
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
+                if (stopFlag)
+                {// 停止要求がきたら抜ける
+                    break;
+                }
+
                 // カウント更新
                 labelCntUp(i, fileCount);
 
@@ -318,24 +448,25 @@ namespace AnalysisDataCollect
                     /* 加速度 */
                     // X軸
                     fileName = path + "/acce_x.txt";
-                    outputFilePath = output_path + "/acce_x_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_X);
 
                     // Y軸
                     fileName = path + "/acce_y.txt";
-                    outputFilePath = output_path + "/acce_y_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_Y);
 
                     // Z軸
                     fileName = path + "/acce_z.txt";
-                    outputFilePath = output_path + "/acce_z_sum.txt";
-                    dataCollect(fileName, outputFilePath);
+                    dataCollect(fileName, writer_Z);
                 }
                 else
                 {
-                    return false;
+                    fileCount++;
                 }
             }
+            writer_X.Close();
+            writer_Y.Close();
+            writer_Z.Close();
+
             return true;
         }
 
@@ -343,13 +474,12 @@ namespace AnalysisDataCollect
         /* 関数名   : dataCollect					            				*/
         /* 機能     : データまとめ処理		                                    */
         /* 引数     : string: fileName                                          */
-        /*          : string: outputFilePath                                    */
+        /*          : StreamWriter: writer                                      */
         /* 戻り値   : なし														*/
         /************************************************************************/
-        private void dataCollect(string fileName, string outputFilePath)
+        private void dataCollect(string fileName, StreamWriter writer)
         {
             string line = "";
-            Encoding enc = Encoding.GetEncoding("Shift_JIS");   // 文字コードを指定
 
             if (System.IO.File.Exists(fileName))
             {
@@ -357,10 +487,8 @@ namespace AnalysisDataCollect
                 {
                     line = file.ReadToEnd();
                     file.Close();
-                    // ファイルを開く
-                    StreamWriter writer = new StreamWriter(outputFilePath, true, enc);
+                    // ファイルに書きこむ
                     writer.Write(line);
-                    writer.Close();
                 }
             }
         }
@@ -374,10 +502,13 @@ namespace AnalysisDataCollect
         /************************************************************************/
         private void labelCntUp(int cnt, int fileCount)
         {
-            progressBar.Value = cnt;
-            progressBar.Maximum = fileCount;
-            Counter_label.Text = (cnt + 1) + " / " + fileCount;
-            Update();
+            this.Invoke((MethodInvoker)delegate
+            {
+                progressBar.Value = cnt;
+                progressBar.Maximum = fileCount;
+                Counter_label.Text = (cnt + 1) + " / " + fileCount;
+                Update();
+            });
         }
 
         /************************************************************************/
@@ -401,6 +532,30 @@ namespace AnalysisDataCollect
                     MessageBox.Show(f, path + "は存在しません");
                 }
                 f.TopMost = false;
+            }
+        }
+
+        /************************************************************************/
+        /* 関数名   : buttonStateChange        									*/
+        /* 機能     : ボタンの状態変更    	                                    */
+        /* 引数     : bool: enable                                              */
+        /* 戻り値   : なし														*/
+        /************************************************************************/
+        private void buttonStateChange(bool enable)
+        {
+            if(enable)
+            {
+                acceStartButton.Enabled = true;
+                apneaStartButton.Enabled = true;
+                pluseStartButton.Enabled = true;
+                stopButton.Enabled = false;
+            }
+            else
+            {
+                acceStartButton.Enabled = false;
+                apneaStartButton.Enabled = false;
+                pluseStartButton.Enabled = false;
+                stopButton.Enabled = true;
             }
         }
     }
