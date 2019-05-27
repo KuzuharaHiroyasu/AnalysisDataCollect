@@ -79,13 +79,13 @@ namespace AnalysisDataCollect
         }
 
         /************************************************************************/
-        /* 関数名   : pluseStartButton_MouseClickAsync							*/
-        /* 機能     : pluseデータまとめ開始ボタン押下                      		*/
+        /* 関数名   : photorefStartButton_MouseClickAsync						*/
+        /* 機能     : photorefデータまとめ開始ボタン押下                   		*/
         /* 引数     : object        : sender                                    */
         /*          : MouseEventArgs: e                                         */
         /* 戻り値   : なし														*/
         /************************************************************************/
-        private async void pluseStartButton_MouseClickAsync(object sender, MouseEventArgs e)
+        private async void photorefStartButton_MouseClickAsync(object sender, MouseEventArgs e)
         {
             int fileCount;
 
@@ -103,9 +103,9 @@ namespace AnalysisDataCollect
             progressBar.Maximum = fileCount;
 
             // まとめ処理を別スレッドで開始
-            bool result = await Task.Run(() => pluseCollect(output_path, fileCount));
+            bool result = await Task.Run(() => photorefCollect(output_path, fileCount));
 
-            if(stopFlag)
+            if (stopFlag)
             {
                 stopFlag = false;
             }
@@ -471,6 +471,49 @@ namespace AnalysisDataCollect
         }
 
         /************************************************************************/
+        /* 関数名   : photorefCollect								            */
+        /* 機能     : photorefデータまとめ処理	                                */
+        /* 引数     : string: output_path                                       */
+        /*          : int   : fileCount                                         */
+        /* 戻り値   : true : 成功                                               */
+        /*          : false: 失敗                                               */
+        /************************************************************************/
+        private bool photorefCollect(string output_path, int fileCount)
+        {
+            string fileName = "";
+            string outputFilePath_photoref = output_path + "/photoref_sum.txt";
+
+            // フォトセンサーのまとめ用ファイルを開く
+            StreamWriter writer_photoref = new StreamWriter(outputFilePath_photoref, true, enc);
+
+            for (int i = 0; i <= fileCount - 1; i++)
+            {
+                if (stopFlag)
+                {// 停止要求がきたら抜ける
+                    break;
+                }
+
+                // カウント更新
+                labelCntUp(i, fileCount);
+
+                path = path_textbox.Text + "/" + i;
+                if (System.IO.Directory.Exists(path))
+                {
+                    /* フォトセンサー */
+                    fileName = path + "/photoref.txt";
+                    dataCollect(fileName, writer_photoref);
+                }
+                else
+                {
+                    fileCount++;
+                }
+            }
+            writer_photoref.Close();
+
+            return true;
+        }
+
+        /************************************************************************/
         /* 関数名   : dataCollect					            				*/
         /* 機能     : データまとめ処理		                                    */
         /* 引数     : string: fileName                                          */
@@ -547,14 +590,14 @@ namespace AnalysisDataCollect
             {
                 acceStartButton.Enabled = true;
                 apneaStartButton.Enabled = true;
-                pluseStartButton.Enabled = true;
+                photorefStartButton.Enabled = true;
                 stopButton.Enabled = false;
             }
             else
             {
                 acceStartButton.Enabled = false;
                 apneaStartButton.Enabled = false;
-                pluseStartButton.Enabled = false;
+                photorefStartButton.Enabled = false;
                 stopButton.Enabled = true;
             }
         }

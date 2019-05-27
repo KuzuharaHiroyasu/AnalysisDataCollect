@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pluseStartButton = new System.Windows.Forms.Button();
+            this.photorefStartButton = new System.Windows.Forms.Button();
             this.path_textbox = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label1 = new System.Windows.Forms.Label();
@@ -40,15 +40,15 @@
             this.stopButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // pluseStartButton
+            // photorefStartButton
             // 
-            this.pluseStartButton.Location = new System.Drawing.Point(45, 86);
-            this.pluseStartButton.Name = "pluseStartButton";
-            this.pluseStartButton.Size = new System.Drawing.Size(132, 50);
-            this.pluseStartButton.TabIndex = 0;
-            this.pluseStartButton.Text = "pluseデータまとめ開始";
-            this.pluseStartButton.UseVisualStyleBackColor = true;
-            this.pluseStartButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pluseStartButton_MouseClickAsync);
+            this.photorefStartButton.Location = new System.Drawing.Point(45, 86);
+            this.photorefStartButton.Name = "photorefStartButton";
+            this.photorefStartButton.Size = new System.Drawing.Size(132, 50);
+            this.photorefStartButton.TabIndex = 0;
+            this.photorefStartButton.Text = "photorefデータまとめ開始";
+            this.photorefStartButton.UseVisualStyleBackColor = true;
+            this.photorefStartButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.photorefStartButton_MouseClickAsync);
             // 
             // path_textbox
             // 
@@ -66,9 +66,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(41, 36);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(310, 12);
+            this.label1.Size = new System.Drawing.Size(325, 12);
             this.label1.TabIndex = 2;
-            this.label1.Text = "ax\\pulse、ax\\apnea、ax\\acce配下の取得データフォルダを指定";
+            this.label1.Text = "ax\\photoref、ax\\apnea、ax\\acce配下の取得データフォルダを指定";
             // 
             // label2
             // 
@@ -138,7 +138,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.path_textbox);
-            this.Controls.Add(this.pluseStartButton);
+            this.Controls.Add(this.photorefStartButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
             this.Text = "データまとめツール";
@@ -150,7 +150,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button pluseStartButton;
+        private System.Windows.Forms.Button photorefStartButton;
         private System.Windows.Forms.TextBox path_textbox;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label1;
