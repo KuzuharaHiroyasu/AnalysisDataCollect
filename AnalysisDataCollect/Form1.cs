@@ -351,6 +351,10 @@ namespace AnalysisDataCollect
             string outputFilePath_snore_Thre = output_path + "/snore_Thre_sum.txt";
             string outputFilePath_raw = output_path + "/raw_sum.txt";
             string outputFilePath_RMS = output_path + "/RMS_sum.txt";
+            string outputFilePath_raw_heartBeatRemov = output_path + "/raw_heartBeatRemov_sum.txt";
+            string outputFilePath_edge_movave = output_path + "/edge_movave_sum.txt";
+            string outputFilePath_movave = output_path + "/movave_sum.txt";
+
 
             // 各まとめ用ファイルを開く
             StreamWriter writer_apnea = new StreamWriter(outputFilePath_apnea, true, enc);
@@ -359,6 +363,9 @@ namespace AnalysisDataCollect
             StreamWriter writer_snore_Thre = new StreamWriter(outputFilePath_snore_Thre, true, enc);
             StreamWriter writer_raw = new StreamWriter(outputFilePath_raw, true, enc);
             StreamWriter writer_RMS = new StreamWriter(outputFilePath_RMS, true, enc);
+            StreamWriter writer_raw_heartBeatRemov = new StreamWriter(outputFilePath_raw_heartBeatRemov, true, enc);
+            StreamWriter writer_edge_movave = new StreamWriter(outputFilePath_edge_movave, true, enc);
+            StreamWriter writer_movave = new StreamWriter(outputFilePath_movave, true, enc);
 
             for (int i = 0; i <= fileCount - 1; i++)
             {
@@ -397,6 +404,18 @@ namespace AnalysisDataCollect
                     // rmsデータ
                     fileName = path + "/RMS.txt";
                     dataCollect(fileName, writer_RMS);
+
+                    // raw_heartBeatRemovデータ
+                    fileName = path + "/raw_heartBeatRemov.txt";
+                    dataCollect(fileName, writer_raw_heartBeatRemov);
+
+                    // edge_movaveデータ
+                    fileName = path + "/edge_movave.txt";
+                    dataCollect(fileName, writer_edge_movave);
+
+                    // movaveデータ
+                    fileName = path + "/movave.txt";
+                    dataCollect(fileName, writer_movave);
                 } else
                 {
                     fileCount++;
@@ -408,6 +427,9 @@ namespace AnalysisDataCollect
             writer_snore_Thre.Close();
             writer_raw.Close();
             writer_RMS.Close();
+            writer_raw_heartBeatRemov.Close();
+            writer_edge_movave.Close();
+            writer_movave.Close();
 
             return true;
         }
