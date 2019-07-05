@@ -444,6 +444,12 @@ namespace AnalysisDataCollect
         /************************************************************************/
         private bool acceCollect(string output_path, int fileCount)
         {
+            // 時間保存用テキスト
+            DateTime dataTime;
+            string saveTimeFilePath = output_path + "/saveTime.txt";
+            StreamWriter saveTime = new StreamWriter(saveTimeFilePath, true, enc); ;
+
+            // データ保存用テキスト
             string fileName = "";
             string outputFilePath_X = output_path + "/acce_x_sum.txt";
             string outputFilePath_Y = output_path + "/acce_y_sum.txt";
@@ -484,11 +490,25 @@ namespace AnalysisDataCollect
                 {
                     fileCount++;
                 }
+
+                if(i == 0)
+                {// 最初のフォルダ作成時間保存
+                    saveTime.Write("[開始]\n");
+                    dataTime = System.IO.Directory.GetCreationTime(path);
+                    saveTime.Write(dataTime.ToString() + "\n" + "\n");
+                }
+                else if (i == (fileCount - 1))
+                {// 最後のフォルダ作成時間保存
+                    saveTime.Write("[終了]\n");
+                    dataTime = System.IO.Directory.GetCreationTime(path);
+                    saveTime.Write(dataTime.ToString() + "\n");
+                }
+
             }
             writer_X.Close();
             writer_Y.Close();
             writer_Z.Close();
-
+            saveTime.Close();
             return true;
         }
 
