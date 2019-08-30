@@ -346,7 +346,9 @@ namespace AnalysisDataCollect
         {
             string fileName = "";
             string outputFilePath_apnea = output_path + "/apnea_sum.txt";
-            string outputFilePath_snore = output_path + "/snore__sum.txt";
+            string outputFilePath_snore = output_path + "/snore_sum.txt";
+            string outputFilePath_apnea_G1D = output_path + "/apnea_g1d_sum.txt";
+            string outputFilePath_snore_G1D = output_path + "/snore_g1d_sum.txt";
             string outputFilePath_rawsnore = output_path + "/rawsnore_sum.txt";
             string outputFilePath_snore_Thre = output_path + "/snore_Thre_sum.txt";
             string outputFilePath_raw = output_path + "/raw_sum.txt";
@@ -356,9 +358,12 @@ namespace AnalysisDataCollect
             string outputFilePath_movave = output_path + "/movave_sum.txt";
 
 
+
             // 各まとめ用ファイルを開く
             StreamWriter writer_apnea = new StreamWriter(outputFilePath_apnea, true, enc);
             StreamWriter writer_snore = new StreamWriter(outputFilePath_snore, true, enc);
+            StreamWriter writer_apnea_g1d = new StreamWriter(outputFilePath_apnea_G1D, true, enc);
+            StreamWriter writer_snore_g1d = new StreamWriter(outputFilePath_snore_G1D, true, enc);
             StreamWriter writer_rawsnore = new StreamWriter(outputFilePath_rawsnore, true, enc);
             StreamWriter writer_snore_Thre = new StreamWriter(outputFilePath_snore_Thre, true, enc);
             StreamWriter writer_raw = new StreamWriter(outputFilePath_raw, true, enc);
@@ -381,13 +386,21 @@ namespace AnalysisDataCollect
                 if (System.IO.Directory.Exists(path))
                 {
                     /* 呼吸 */
-                    // 無呼吸
+                    // 無呼吸判定
                     fileName = path + "/apnea.txt";
                     dataCollect(fileName, writer_apnea);
 
                     // いびき判定
                     fileName = path + "/snore_.txt";
                     dataCollect(fileName, writer_snore);
+
+                    // 無呼吸判定(G1D)
+                    fileName = path + "/apnea_g1d.txt";
+                    dataCollect(fileName, writer_apnea_g1d);
+
+                    // いびき判定(G1D)
+                    fileName = path + "/snore_g1d.txt";
+                    dataCollect(fileName, writer_snore_g1d);
 
                     // いびき生データ
                     fileName = path + "/rawsnore.txt";
@@ -423,6 +436,8 @@ namespace AnalysisDataCollect
             }
             writer_apnea.Close();
             writer_snore.Close();
+            writer_apnea_g1d.Close();
+            writer_snore_g1d.Close();
             writer_rawsnore.Close();
             writer_snore_Thre.Close();
             writer_raw.Close();
