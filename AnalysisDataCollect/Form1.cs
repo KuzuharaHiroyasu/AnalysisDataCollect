@@ -346,7 +346,7 @@ namespace AnalysisDataCollect
         {
             string fileName = "";
             string outputFilePath_apnea = output_path + "/apnea_sum.txt";
-            string outputFilePath_snore = output_path + "/snore_sum.txt";
+            string outputFilePath_snore = output_path + "/snore__sum.txt";
             string outputFilePath_apnea_G1D = output_path + "/apnea_g1d_sum.txt";
             string outputFilePath_snore_G1D = output_path + "/snore_g1d_sum.txt";
             string outputFilePath_rawsnore = output_path + "/rawsnore_sum.txt";
